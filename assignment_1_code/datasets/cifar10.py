@@ -64,7 +64,7 @@ class CIFAR10Dataset(ClassificationDataset):
         else:
             raise ValueError(f"Unknown subset {self.subset}")
         images = []
-        labels = []
+        labels_local = []
         for fname in fnames:
             fpath = os.path.join(self.fdir, fname)
             if not os.path.isfile(fpath):
@@ -76,8 +76,8 @@ class CIFAR10Dataset(ClassificationDataset):
                 # reshape to (10000, 3, 32, 32) -> transpose to (10000, 32, 32, 3)
                 data = data.reshape(-1, 3, 32, 32).transpose(0, 2, 3, 1)
                 images.append(data)
-                labels.extend(labels)
-        return np.concatenate(images), np.array(labels)
+                labels_local.extend(labels)
+        return np.concatenate(images), np.array(labels_local)
 
     def __len__(self) -> int:
         """
