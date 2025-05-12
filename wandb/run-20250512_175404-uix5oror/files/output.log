@@ -1,0 +1,103 @@
+Training Epoch 0: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 157/157 [02:35<00:00,  1.01it/s]
+
+______epoch 0
+
+Accuracy: 10.2450%
+Per class accuracy: 10.1858%
+Accuracy for class: plane  is 0.13
+Accuracy for class: car    is 0.05
+Accuracy for class: bird   is 0.17
+Accuracy for class: cat    is 0.09
+Accuracy for class: deer   is 0.09
+Accuracy for class: dog    is 0.10
+Accuracy for class: frog   is 0.08
+Accuracy for class: horse  is 0.08
+Accuracy for class: ship   is 0.13
+Accuracy for class: truck  is 0.12
+Training Epoch 1: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 157/157 [02:35<00:00,  1.01it/s]
+
+______epoch 1
+
+Accuracy: 10.4300%
+Per class accuracy: 10.3850%
+Accuracy for class: plane  is 0.07
+Accuracy for class: car    is 0.02
+Accuracy for class: bird   is 0.17
+Accuracy for class: cat    is 0.16
+Accuracy for class: deer   is 0.12
+Accuracy for class: dog    is 0.09
+Accuracy for class: frog   is 0.10
+Accuracy for class: horse  is 0.10
+Accuracy for class: ship   is 0.11
+Accuracy for class: truck  is 0.09
+Training Epoch 2: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 157/157 [02:33<00:00,  1.02it/s]
+
+______epoch 2
+
+Accuracy: 11.6200%
+Per class accuracy: 11.5300%
+Accuracy for class: plane  is 0.09
+Accuracy for class: car    is 0.05
+Accuracy for class: bird   is 0.19
+Accuracy for class: cat    is 0.06
+Accuracy for class: deer   is 0.13
+Accuracy for class: dog    is 0.16
+Accuracy for class: frog   is 0.09
+Accuracy for class: horse  is 0.14
+Accuracy for class: ship   is 0.17
+Accuracy for class: truck  is 0.07
+Training Epoch 3: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 157/157 [02:38<00:00,  1.01s/it]
+
+______epoch 3
+
+Accuracy: 12.3300%
+Per class accuracy: 12.2699%
+Accuracy for class: plane  is 0.12
+Accuracy for class: car    is 0.08
+Accuracy for class: bird   is 0.16
+Accuracy for class: cat    is 0.09
+Accuracy for class: deer   is 0.10
+Accuracy for class: dog    is 0.18
+Accuracy for class: frog   is 0.10
+Accuracy for class: horse  is 0.13
+Accuracy for class: ship   is 0.17
+Accuracy for class: truck  is 0.10
+Training Epoch 4: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 157/157 [02:34<00:00,  1.02it/s]
+
+______epoch 4
+
+Accuracy: 13.5600%
+Per class accuracy: 13.5028%
+Accuracy for class: plane  is 0.14
+Accuracy for class: car    is 0.08
+Accuracy for class: bird   is 0.16
+Accuracy for class: cat    is 0.14
+Accuracy for class: deer   is 0.09
+Accuracy for class: dog    is 0.22
+Accuracy for class: frog   is 0.14
+Accuracy for class: horse  is 0.14
+Accuracy for class: ship   is 0.15
+Accuracy for class: truck  is 0.09
+Validation Epoch 4:  50%|████████████████████████████████████████████████████████████████████████                                                                         | 78/157 [00:40<00:40,  1.93it/s]
+Traceback (most recent call last):
+  File "/Users/jan/Documents/Uni/Master_TU/DLVC/assignment_1/train_resnet18.py", line 104, in <module>
+    train(args)
+  File "/Users/jan/Documents/Uni/Master_TU/DLVC/assignment_1/train_resnet18.py", line 88, in train
+    trainer.train()
+  File "/Users/jan/Documents/Uni/Master_TU/DLVC/assignment_1/assignment_1_code/trainer.py", line 225, in train
+    val_loss, val_acc, val_pcacc = self._val_epoch(epoch_idx)
+  File "/Users/jan/Documents/Uni/Master_TU/DLVC/assignment_1/assignment_1_code/trainer.py", line 177, in _val_epoch
+    for inputs, targets in tqdm(self.val_loader, desc=f"Validation Epoch {epoch_idx}"):
+  File "/Users/jan/Documents/Uni/Master_TU/DLVC/assignment_1/.venv/lib/python3.10/site-packages/tqdm/std.py", line 1181, in __iter__
+    for obj in iterable:
+  File "/Users/jan/Documents/Uni/Master_TU/DLVC/assignment_1/.venv/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 733, in __next__
+    data = self._next_data()
+  File "/Users/jan/Documents/Uni/Master_TU/DLVC/assignment_1/.venv/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 789, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/Users/jan/Documents/Uni/Master_TU/DLVC/assignment_1/.venv/lib/python3.10/site-packages/torch/utils/data/_utils/fetch.py", line 52, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/Users/jan/Documents/Uni/Master_TU/DLVC/assignment_1/.venv/lib/python3.10/site-packages/torch/utils/data/_utils/fetch.py", line 52, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/Users/jan/Documents/Uni/Master_TU/DLVC/assignment_1/assignment_1_code/datasets/cifar10.py", line 98, in __getitem__
+    image = torch.from_numpy(self.images[idx]).permute(2,0,1)
+IndexError: index 10000 is out of bounds for axis 0 with size 10000

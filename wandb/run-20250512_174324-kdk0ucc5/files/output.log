@@ -1,0 +1,13 @@
+Training Epoch 0:   0%|                                                                                                                                                            | 0/157 [00:01<?, ?it/s]
+Traceback (most recent call last):
+  File "/Users/jan/Documents/Uni/Master_TU/DLVC/assignment_1/train_resnet18.py", line 104, in <module>
+    train(args)
+  File "/Users/jan/Documents/Uni/Master_TU/DLVC/assignment_1/train_resnet18.py", line 88, in train
+    trainer.train()
+  File "/Users/jan/Documents/Uni/Master_TU/DLVC/assignment_1/assignment_1_code/trainer.py", line 211, in train
+    train_loss, train_acc, train_pcacc = self._train_epoch(epoch_idx)
+  File "/Users/jan/Documents/Uni/Master_TU/DLVC/assignment_1/assignment_1_code/trainer.py", line 142, in _train_epoch
+    self.train_metric.update(outputs.detach(), targets)
+  File "/Users/jan/Documents/Uni/Master_TU/DLVC/assignment_1/assignment_1_code/metrics.py", line 73, in update
+    raise ValueError("Prediction must be a class-score vector with values between 0 and 1.")
+ValueError: Prediction must be a class-score vector with values between 0 and 1.

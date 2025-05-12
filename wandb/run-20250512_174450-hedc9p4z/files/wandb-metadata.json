@@ -1,0 +1,40 @@
+{
+  "os": "macOS-15.4.1-arm64-arm-64bit",
+  "python": "CPython 3.10.11",
+  "startedAt": "2025-05-12T15:44:50.192443Z",
+  "program": "/Users/jan/Documents/Uni/Master_TU/DLVC/assignment_1/train_resnet18.py",
+  "codePath": "train_resnet18.py",
+  "email": "jan@toelken.com",
+  "root": "/Users/jan/Documents/Uni/Master_TU/DLVC/assignment_1",
+  "host": "e233-135.eduroam.tuwien.ac.at",
+  "executable": "/Users/jan/Documents/Uni/Master_TU/DLVC/assignment_1/.venv/bin/python",
+  "codePathLocal": "train_resnet18.py",
+  "cpu_count": 10,
+  "cpu_count_logical": 10,
+  "disk": {
+    "/": {
+      "total": "994662584320",
+      "used": "975041753088"
+    },
+    "/System/Volumes/Data": {
+      "total": "994662584320",
+      "used": "975041753088"
+    }
+  },
+  "memory": {
+    "total": "34359738368"
+  },
+  "cpu": {
+    "count": 10,
+    "countLogical": 10
+  },
+  "apple": {
+    "name": "Apple M1 Max",
+    "ecpuCores": 2,
+    "pcpuCores": 8,
+    "gpuCores": 24,
+    "memoryGb": 32,
+    "swapTotalBytes": "10737418240",
+    "ramTotalBytes": "34359738368"
+  }
+}
