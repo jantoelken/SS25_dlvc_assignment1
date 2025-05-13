@@ -58,6 +58,7 @@ class ImgClassificationTrainer(BaseTrainer):
         training_save_dir: Path,
         batch_size: int = 4,
         val_frequency: int = 5,
+        wab_suffix: str = ""
     ) -> None:
         """
         Args and Kwargs:
@@ -97,10 +98,11 @@ class ImgClassificationTrainer(BaseTrainer):
         self.training_save_dir = training_save_dir
         self.batch_size = batch_size
         self.val_frequency = val_frequency
+        self.wab_suffix = wab_suffix
         self.wandb_logger = WandBLogger(
             enabled=True,
             model=model,
-            run_name=f"{self.model.__class__.__name__}_{self.optimizer.__class__.__name__}_{self.loss_fn.__class__.__name__}",
+            run_name=f"resnet18{wab_suffix}",
         )
 
         #data loaders
@@ -234,7 +236,7 @@ class ImgClassificationTrainer(BaseTrainer):
                 #save model if validation accuracy is better than previous best
                 if val_pcacc > self.best_val_pcacc:
                     self.best_val_pcacc = val_pcacc
-                    torch.save(self.model.state_dict(), self.training_save_dir / "best_model.pth")
+                    torch.save(self.model.state_dict(), self.training_save_dir / f"resnet18{self.wab_suffix}.pth")
                     print(f"Model saved at epoch {epoch_idx} with mPCAcc: {val_pcacc:.4f}")
 
             #update learning rate

@@ -1,0 +1,45 @@
+Training Epoch 0:   9%|███████████▋                                                                                                                            | 27/313 [00:24<04:24,  1.08it/s]
+Traceback (most recent call last):
+  File "/teamspace/studios/this_studio/SS25_dlvc_assignment1/train_resnet18.py", line 104, in <module>
+    train(args)
+  File "/teamspace/studios/this_studio/SS25_dlvc_assignment1/train_resnet18.py", line 88, in train
+    trainer.train()
+  File "/teamspace/studios/this_studio/SS25_dlvc_assignment1/assignment_1_code/trainer.py", line 211, in train
+    train_loss, train_acc, train_pcacc = self._train_epoch(epoch_idx)
+  File "/teamspace/studios/this_studio/SS25_dlvc_assignment1/assignment_1_code/trainer.py", line 140, in _train_epoch
+    loss.backward()
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/torch/_tensor.py", line 648, in backward
+    torch.autograd.backward(
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/torch/autograd/__init__.py", line 353, in backward
+    _engine_run_backward(
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/torch/autograd/graph.py", line 824, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/wandb/integration/torch/wandb_torch.py", line 276, in <lambda>
+    handle = var.register_hook(lambda grad: _callback(grad, log_track))
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/wandb/integration/torch/wandb_torch.py", line 274, in _callback
+    self.log_tensor_stats(grad.data, name)
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/wandb/integration/torch/wandb_torch.py", line 229, in log_tensor_stats
+    tensor = flat.histc(bins=self._num_bins, min=tmin, max=tmax)
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/teamspace/studios/this_studio/SS25_dlvc_assignment1/train_resnet18.py", line 104, in <module>
+    train(args)
+  File "/teamspace/studios/this_studio/SS25_dlvc_assignment1/train_resnet18.py", line 88, in train
+    trainer.train()
+  File "/teamspace/studios/this_studio/SS25_dlvc_assignment1/assignment_1_code/trainer.py", line 211, in train
+    train_loss, train_acc, train_pcacc = self._train_epoch(epoch_idx)
+  File "/teamspace/studios/this_studio/SS25_dlvc_assignment1/assignment_1_code/trainer.py", line 140, in _train_epoch
+    loss.backward()
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/torch/_tensor.py", line 648, in backward
+    torch.autograd.backward(
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/torch/autograd/__init__.py", line 353, in backward
+    _engine_run_backward(
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/torch/autograd/graph.py", line 824, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/wandb/integration/torch/wandb_torch.py", line 276, in <lambda>
+    handle = var.register_hook(lambda grad: _callback(grad, log_track))
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/wandb/integration/torch/wandb_torch.py", line 274, in _callback
+    self.log_tensor_stats(grad.data, name)
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/wandb/integration/torch/wandb_torch.py", line 229, in log_tensor_stats
+    tensor = flat.histc(bins=self._num_bins, min=tmin, max=tmax)
+KeyboardInterrupt

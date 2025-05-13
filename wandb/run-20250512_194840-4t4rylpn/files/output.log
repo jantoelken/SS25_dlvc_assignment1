@@ -1,0 +1,69 @@
+Training Epoch 0:   0%|                                                                                                                                                  | 0/40 [00:00<?, ?it/s]
+Traceback (most recent call last):
+  File "/teamspace/studios/this_studio/SS25_dlvc_assignment1/train_resnet18.py", line 105, in <module>
+    train(args)
+  File "/teamspace/studios/this_studio/SS25_dlvc_assignment1/train_resnet18.py", line 89, in train
+    trainer.train()
+  File "/teamspace/studios/this_studio/SS25_dlvc_assignment1/assignment_1_code/trainer.py", line 213, in train
+    train_loss, train_acc, train_pcacc = self._train_epoch(epoch_idx)
+  File "/teamspace/studios/this_studio/SS25_dlvc_assignment1/assignment_1_code/trainer.py", line 140, in _train_epoch
+    outputs = self.model(inputs)
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1857, in _call_impl
+    return inner()
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1805, in inner
+    result = forward_call(*args, **kwargs)
+  File "/teamspace/studios/this_studio/SS25_dlvc_assignment1/assignment_1_code/models/class_model.py", line 11, in forward
+    return self.net(x)
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/torchvision/models/resnet.py", line 285, in forward
+    return self._forward_impl(x)
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/torchvision/models/resnet.py", line 268, in _forward_impl
+    x = self.conv1(x)
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/torch/nn/modules/conv.py", line 554, in forward
+    return self._conv_forward(input, self.weight, self.bias)
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/torch/nn/modules/conv.py", line 549, in _conv_forward
+    return F.conv2d(
+RuntimeError: expected scalar type Byte but found Float
+Traceback (most recent call last):
+  File "/teamspace/studios/this_studio/SS25_dlvc_assignment1/train_resnet18.py", line 105, in <module>
+    train(args)
+  File "/teamspace/studios/this_studio/SS25_dlvc_assignment1/train_resnet18.py", line 89, in train
+    trainer.train()
+  File "/teamspace/studios/this_studio/SS25_dlvc_assignment1/assignment_1_code/trainer.py", line 213, in train
+    train_loss, train_acc, train_pcacc = self._train_epoch(epoch_idx)
+  File "/teamspace/studios/this_studio/SS25_dlvc_assignment1/assignment_1_code/trainer.py", line 140, in _train_epoch
+    outputs = self.model(inputs)
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1857, in _call_impl
+    return inner()
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1805, in inner
+    result = forward_call(*args, **kwargs)
+  File "/teamspace/studios/this_studio/SS25_dlvc_assignment1/assignment_1_code/models/class_model.py", line 11, in forward
+    return self.net(x)
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/torchvision/models/resnet.py", line 285, in forward
+    return self._forward_impl(x)
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/torchvision/models/resnet.py", line 268, in _forward_impl
+    x = self.conv1(x)
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/torch/nn/modules/conv.py", line 554, in forward
+    return self._conv_forward(input, self.weight, self.bias)
+  File "/home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/torch/nn/modules/conv.py", line 549, in _conv_forward
+    return F.conv2d(
+RuntimeError: expected scalar type Byte but found Float

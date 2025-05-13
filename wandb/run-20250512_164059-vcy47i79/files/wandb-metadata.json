@@ -1,0 +1,31 @@
+{
+  "os": "Linux-6.8.0-1029-gcp-x86_64-with-glibc2.31",
+  "python": "CPython 3.10.10",
+  "startedAt": "2025-05-12T16:40:59.727099Z",
+  "program": "/teamspace/studios/this_studio/SS25_dlvc_assignment1/train_resnet18.py",
+  "codePath": "train_resnet18.py",
+  "git": {
+    "remote": "https://github.com/jantoelken/SS25_dlvc_assignment1.git",
+    "commit": "62f50dc86d3caaea9c6052ccc8f6b9a408091031"
+  },
+  "email": "jan@toelken.com",
+  "root": "/teamspace/studios/this_studio/SS25_dlvc_assignment1",
+  "host": "cs-01jv2krnjtjk9dbw7946h8h8mr",
+  "executable": "/home/zeus/miniconda3/envs/cloudspace/bin/python",
+  "codePathLocal": "train_resnet18.py",
+  "cpu_count": 2,
+  "cpu_count_logical": 4,
+  "disk": {
+    "/": {
+      "total": "416055988224",
+      "used": "33383473152"
+    }
+  },
+  "memory": {
+    "total": "16767348736"
+  },
+  "cpu": {
+    "count": 2,
+    "countLogical": 4
+  }
+}

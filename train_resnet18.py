@@ -26,13 +26,27 @@ def train(args):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
 
-    train_transform = v2.Compose(
-        [
-            v2.ToImage(),
-            v2.ToDtype(torch.float32, scale=True),
-            v2.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-        ]
-    )
+    conf = {
+        "regularization": True,
+        "augmentation": True,
+        "lr_scheduler" : "exp",
+        "optimizer" : "adamw"
+        }
+
+
+    #Data Augmentation   
+    train_transform_list = [
+        v2.ToImage(),
+        v2.ToDtype(torch.float32, scale=True)
+    ]
+    if conf["augmentation"]:
+        train_transform_list.insert(1, v2.RandomCrop(32, padding=4))
+        train_transform_list.insert(1, v2.RandomHorizontalFlip(p=0.5))
+
+    train_transform_list.append(
+        v2.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+    )   
+    train_transform = v2.Compose(train_transform_list)
 
     val_transform = v2.Compose(
         [
@@ -42,7 +56,7 @@ def train(args):
         ]
     )
 
-    cifar10_dir = Path("/Users/jan/Documents/Uni/Master_TU/DLVC/cifar-10-batches-py")
+    cifar10_dir = Path("/teamspace/studios/this_studio/cifar-10-batches-py")
     train_data = CIFAR10Dataset(
         cifar10_dir, Subset.TRAINING, transform=train_transform
     )
@@ -50,17 +64,38 @@ def train(args):
         cifar10_dir, Subset.VALIDATION, transform=val_transform
     )
 
+    #load resnet18
     basemodel = resnet18(weights=None)
-
     basemodel.fc = torch.nn.Linear(basemodel.fc.in_features, 10)
-
 
 
     model = DeepClassifier(basemodel)
     model.to(device)
-    optimizer = torch.optim.AdamW(model.parameters(), lr=0.001, amsgrad=True)
+
+    if conf["optimizer"] == "adam":
+            optimizer = torch.optim.Adam(
+            model.parameters(), 
+            lr=0.002,
+        )
+    elif conf["optimizer"] == "adamw":
+        optimizer = torch.optim.AdamW(
+            model.parameters(), 
+            lr=0.002, #bit higher since we use biger batch size 
+            amsgrad=True
+        )
+    elif conf["optimizer"] == "sgd":
+        optimizer = torch.optim.SGD(
+            model.parameters(), 
+            lr=0.01, #sgn needs higher lr
+            momentum=0.9
+        )
+    optimizer = torch.optim.AdamW(model.parameters(), lr=0.003, amsgrad=True, weight_decay=0.01)
     loss_fn = torch.nn.CrossEntropyLoss()
-    lr_scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.9)
+
+    if conf["lr_scheduler"] == "exp":
+        lr_scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.9)
+    elif conf["lr_scheduler"] == "cosine":
+        lr_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.num_epochs)
 
     train_metric = Accuracy(classes=train_data.classes)
     val_metric = Accuracy(classes=val_data.classes)
@@ -82,8 +117,9 @@ def train(args):
         device,
         args.num_epochs,
         model_save_dir,
-        batch_size=128,  # feel free to change
+        batch_size=1024,  # feel free to change
         val_frequency=val_frequency,
+        wab_suffix=f"_reg-{conf['regularization']}_aug-{conf['augmentation']}_lrscheduling-{conf['lr_scheduler']}_opt-{conf['optimizer']}"
     )
     trainer.train()
 
