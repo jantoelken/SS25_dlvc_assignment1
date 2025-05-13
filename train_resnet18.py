@@ -29,7 +29,7 @@ def train(args):
     conf = {
         "regularization": True,
         "augmentation": True,
-        "lr_scheduler" : "exp",
+        "lr_scheduler" : "cosine",
         "optimizer" : "adamw"
         }
 
@@ -76,20 +76,28 @@ def train(args):
             optimizer = torch.optim.Adam(
             model.parameters(), 
             lr=0.002,
+            weight_decay=0.1
         )
     elif conf["optimizer"] == "adamw":
-        optimizer = torch.optim.AdamW(
-            model.parameters(), 
-            lr=0.002, #bit higher since we use biger batch size 
-            amsgrad=True
-        )
+        if conf["regularization"]:
+            optimizer = torch.optim.AdamW(
+                model.parameters(), 
+                lr=0.002, #bit higher since we use biger batch size 
+                amsgrad=True,
+                weight_decay=0.1
+            )
+        else:
+            optimizer = torch.optim.AdamW(
+                model.parameters(), 
+                lr=0.002, #bit higher since we use biger batch size 
+                amsgrad=True
+            )
     elif conf["optimizer"] == "sgd":
         optimizer = torch.optim.SGD(
             model.parameters(), 
             lr=0.01, #sgn needs higher lr
             momentum=0.9
         )
-    optimizer = torch.optim.AdamW(model.parameters(), lr=0.003, amsgrad=True, weight_decay=0.01)
     loss_fn = torch.nn.CrossEntropyLoss()
 
     if conf["lr_scheduler"] == "exp":
@@ -117,7 +125,7 @@ def train(args):
         device,
         args.num_epochs,
         model_save_dir,
-        batch_size=1024,  # feel free to change
+        batch_size=512,  # feel free to change
         val_frequency=val_frequency,
         wab_suffix=f"_reg-{conf['regularization']}_aug-{conf['augmentation']}_lrscheduling-{conf['lr_scheduler']}_opt-{conf['optimizer']}"
     )

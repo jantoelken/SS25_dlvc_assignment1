@@ -19,7 +19,7 @@ class DeepClassifier(nn.Module):
         save_dir.mkdir(parents=True, exist_ok=True)
         
         if suffix is not None:
-            filename = f"model_{suffix}.pth"
+            filename = f"{suffix}.pth"
         else:
             filename = f"model.pth"
 

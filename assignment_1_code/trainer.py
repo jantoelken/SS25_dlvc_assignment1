@@ -236,7 +236,7 @@ class ImgClassificationTrainer(BaseTrainer):
                 #save model if validation accuracy is better than previous best
                 if val_pcacc > self.best_val_pcacc:
                     self.best_val_pcacc = val_pcacc
-                    torch.save(self.model.state_dict(), self.training_save_dir / f"resnet18{self.wab_suffix}.pth")
+                    self.model.save(self.training_save_dir, suffix=f"resnet18{self.wab_suffix}")
                     print(f"Model saved at epoch {epoch_idx} with mPCAcc: {val_pcacc:.4f}")
 
             #update learning rate

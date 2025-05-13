@@ -16,7 +16,7 @@ class WandBLogger:
         if self.enabled:
             wandb.init(entity="jantoelken-tu-wien",
                         project="dlvc_a1",
-                        group="resnet18_initial")
+                        group="resnet18")
             if run_name is None:
                 wandb.run.name = wandb.run.id    
             else:
