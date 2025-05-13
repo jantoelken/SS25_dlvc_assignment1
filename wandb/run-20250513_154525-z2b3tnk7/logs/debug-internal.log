@@ -1,0 +1,17 @@
+{"time":"2025-05-13T15:45:25.472150663Z","level":"INFO","msg":"stream: starting","core version":"0.19.11","symlink path":"/teamspace/studios/this_studio/SS25_dlvc_assignment1/wandb/run-20250513_154525-z2b3tnk7/logs/debug-core.log"}
+{"time":"2025-05-13T15:45:25.615232194Z","level":"INFO","msg":"created new stream","id":"z2b3tnk7"}
+{"time":"2025-05-13T15:45:25.615319023Z","level":"INFO","msg":"stream: started","id":"z2b3tnk7"}
+{"time":"2025-05-13T15:45:25.615477931Z","level":"INFO","msg":"writer: Do: started","stream_id":"z2b3tnk7"}
+{"time":"2025-05-13T15:45:25.615499525Z","level":"INFO","msg":"handler: started","stream_id":"z2b3tnk7"}
+{"time":"2025-05-13T15:45:25.615795542Z","level":"INFO","msg":"sender: started","stream_id":"z2b3tnk7"}
+{"time":"2025-05-13T15:45:26.167570894Z","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-05-13T16:04:11.398613712Z","level":"INFO","msg":"api: retrying HTTP error","status":502,"url":"https://api.wandb.ai/files/jantoelken-tu-wien/dlvc_a1/z2b3tnk7/file_stream","body":"\n<html><head>\n<meta http-equiv=\"content-type\" content=\"text/html;charset=utf-8\">\n<title>502 Server Error</title>\n</head>\n<body text=#000000 bgcolor=#ffffff>\n<h1>Error: Server Error</h1>\n<h2>The server encountered a temporary error and could not complete your request.<p>Please try again in 30 seconds.</h2>\n<h2></h2>\n</body></html>\n"}
+{"time":"2025-05-13T16:10:17.191749166Z","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-05-13T16:10:17.191838998Z","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-05-13T16:10:17.602386584Z","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-05-13T16:10:17.765058633Z","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-05-13T16:10:17.773833793Z","level":"INFO","msg":"stream: closing","id":"z2b3tnk7"}
+{"time":"2025-05-13T16:10:17.773871021Z","level":"INFO","msg":"handler: closed","stream_id":"z2b3tnk7"}
+{"time":"2025-05-13T16:10:17.773954326Z","level":"INFO","msg":"writer: Close: closed","stream_id":"z2b3tnk7"}
+{"time":"2025-05-13T16:10:17.774007493Z","level":"INFO","msg":"sender: closed","stream_id":"z2b3tnk7"}
+{"time":"2025-05-13T16:10:17.774103959Z","level":"INFO","msg":"stream: closed","id":"z2b3tnk7"}

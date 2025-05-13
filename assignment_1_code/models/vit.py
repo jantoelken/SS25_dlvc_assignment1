@@ -3,134 +3,98 @@
 # specify from where you got the code and integrate it into this code repository so that 
 # you can run the model with this code
 import torch
-import torch.nn as nn
-import numpy as np
+from torch import nn
 
-def patchify(images, n_patches):
-    n, c, h, w = images.shape
-    assert h == w, "Patchify method is implemented for square images only"
-    patches = torch.zeros(n, n_patches ** 2, h * w * c // n_patches ** 2)
-    patch_size = h // n_patches
-    for idx, image in enumerate(images):
-        for i in range(n_patches):
-            for j in range(n_patches):
-                patch = image[:, i * patch_size: (i + 1) * patch_size, j * patch_size: (j + 1) * patch_size]
-                patches[idx, i * n_patches + j] = patch.flatten()
-    return patches
-
-def get_positional_embeddings(sequence_length, d):
-    result = torch.ones(sequence_length, d)
-    for i in range(sequence_length):
-        for j in range(d):
-            result[i][j] = np.sin(i / (10000 ** (j / d))) if j % 2 == 0 else np.cos(i / (10000 ** ((j - 1) / d)))
-    return result
-
-class MyMSA(nn.Module):
-    def __init__(self, d, n_heads=2):
-        super(MyMSA, self).__init__()
-        self.d = d
-        self.n_heads = n_heads
-        assert d % n_heads == 0, f"Can't divide dimension {d} into {n_heads} heads"
-        d_head = int(d / n_heads)
-        self.q_mappings = nn.ModuleList([nn.Linear(d_head, d_head) for _ in range(self.n_heads)])
-        self.k_mappings = nn.ModuleList([nn.Linear(d_head, d_head) for _ in range(self.n_heads)])
-        self.v_mappings = nn.ModuleList([nn.Linear(d_head, d_head) for _ in range(self.n_heads)])
-        self.d_head = d_head
-        self.softmax = nn.Softmax(dim=-1)
-        
-    def forward(self, sequences):
-        # Sequences has shape (N, seq_length, token_dim)
-        # We go into shape    (N, seq_length, n_heads, token_dim / n_heads)
-        # And come back to    (N, seq_length, item_dim)  (through concatenation)
-        result = []
-        for sequence in sequences:
-            seq_result = []
-            for head in range(self.n_heads):
-                q_mapping = self.q_mappings[head]
-                k_mapping = self.k_mappings[head]
-                v_mapping = self.v_mappings[head]
-                seq = sequence[:, head * self.d_head: (head + 1) * self.d_head]
-                q, k, v = q_mapping(seq), k_mapping(seq), v_mapping(seq)
-                attention = self.softmax(q @ k.T / (self.d_head ** 0.5))
-                seq_result.append(attention @ v)
-            result.append(torch.hstack(seq_result))
-        return torch.cat([torch.unsqueeze(r, dim=0) for r in result])
-
-class MyViTBlock(nn.Module):
-    def __init__(self, hidden_d, n_heads, mlp_ratio=4):
-        super(MyViTBlock, self).__init__()
-        self.hidden_d = hidden_d
-        self.n_heads = n_heads
-        self.norm1 = nn.LayerNorm(hidden_d)
-        self.mhsa = MyMSA(hidden_d, n_heads)
-        self.norm2 = nn.LayerNorm(hidden_d)
-        self.mlp = nn.Sequential(
-            nn.Linear(hidden_d, mlp_ratio * hidden_d),
-            nn.GELU(),
-            nn.Linear(mlp_ratio * hidden_d, hidden_d)
-        )
-        
-    def forward(self, x):
-        out = x + self.mhsa(self.norm1(x))
-        out = out + self.mlp(self.norm2(out))
-        return out
-
-class MyViT(nn.Module):
-    def __init__(self, chw=(1, 28, 28), n_patches=7, n_blocks=2, hidden_d=8, n_heads=2, out_d=10):
-        # Super constructor
-        super(MyViT, self).__init__()
-        # Attributes
-        self.chw = chw # (C, H, W)
-        self.n_patches = n_patches
-        self.n_blocks = n_blocks
-        self.n_heads = n_heads
-        self.hidden_d = hidden_d
-        
-        # Input and patches sizes
-        assert chw[1] % n_patches == 0, "Input shape not entirely divisible by number of patches"
-        assert chw[2] % n_patches == 0, "Input shape not entirely divisible by number of patches"
-        self.patch_size = (chw[1] / n_patches, chw[2] / n_patches)
-        
-        # 1) Linear mapper
-        self.input_d = int(chw[0] * self.patch_size[0] * self.patch_size[1])
-        self.linear_mapper = nn.Linear(self.input_d, self.hidden_d)
-        
-        # 2) Learnable classification token
-        self.class_token = nn.Parameter(torch.rand(1, self.hidden_d))
-        
-        # 3) Positional embedding
-        self.register_buffer('positional_embeddings', get_positional_embeddings(n_patches ** 2 + 1, hidden_d), persistent=False)
-        
-        # 4) Transformer encoder blocks
-        self.blocks = nn.ModuleList([MyViTBlock(hidden_d, n_heads) for _ in range(n_blocks)])
-        
-        # 5) Classification MLP
-        self.mlp = nn.Sequential(
-            nn.Linear(self.hidden_d, out_d),
-            nn.Softmax(dim=-1)
-        )
+class Patcher(nn.Module):
+    def __init__(self, patch_size):
+        super(Patcher, self).__init__()
+        self.patch_size = patch_size
+        self.unfold = torch.nn.Unfold(kernel_size=patch_size, stride=patch_size)
         
     def forward(self, images):
-        # Dividing images into patches
-        n, c, h, w = images.shape
-        patches = patchify(images, self.n_patches).to(self.positional_embeddings.device)
+        batch_size, channels, height, width = images.shape
+        patch_height, patch_width = [self.patch_size, self.patch_size]
+        assert height % patch_height == 0 and width % patch_width == 0, "Height and width must be divisible by the patch size."
+        patches = self.unfold(images) #bs (cxpxp) N
+        patches = patches.view(batch_size, channels, patch_height, patch_width, -1).permute(0, 4, 1, 2, 3) # bs N C P P
+        return patches
+
+class TransformerBlock(nn.Module):
+    def __init__(self, model_dim, num_heads, mlp_ratio=4.0, dropout=0.1):
+        super(TransformerBlock, self).__init__()
+        self.norm1 = nn.LayerNorm(model_dim)
+        self.attn = nn.MultiheadAttention(model_dim, num_heads, dropout=dropout)
+        self.norm2 = nn.LayerNorm(model_dim)
+        # Feedforward network
+        self.mlp = nn.Sequential(
+            nn.Linear(model_dim, int(model_dim * mlp_ratio)),
+            nn.GELU(),
+            nn.Linear(int(model_dim * mlp_ratio), model_dim),
+            nn.Dropout(dropout),
+        )
+    
+    def forward(self, x):
+        # Self-attention
+        x_norm = self.norm1(x)
+        # MultiheadAttention expects sequence first, then batch
+        x_norm = x_norm.transpose(0, 1)
+        attn_out, _ = self.attn(x_norm, x_norm, x_norm)
+        attn_out = attn_out.transpose(0, 1)
+        x = x + attn_out
         
-        # Running linear layer tokenization
-        # Map the vector corresponding to each patch to the hidden size dimension
-        tokens = self.linear_mapper(patches)
+        # Feedforward network
+        x_norm = self.norm2(x)
+        mlp_out = self.mlp(x_norm)
+        x = x + mlp_out
+        return x
+
+class MyViT(nn.Module):
+    def __init__(self, image_size=32, patch_size=4, model_dim=100, num_heads=3, num_layers=2, num_classes=10):
+        super().__init__()
+        self.image_size = image_size
+        self.patch_size = patch_size
+        self.n_patches = (self.image_size // self.patch_size) ** 2
+        self.model_dim = model_dim
+        self.num_layers = num_layers
+        self.num_heads = num_heads
+        self.num_classes = num_classes
         
-        # Adding classification token to the tokens
-        tokens = torch.cat((self.class_token.expand(n, 1, -1), tokens), dim=1)
+        # 1) Patching
+        self.patcher = Patcher(patch_size=self.patch_size)
         
-        # Adding positional embedding
-        out = tokens + self.positional_embeddings.repeat(n, 1, 1)
+        # 2) Linear Projection
+        self.linear_projector = nn.Linear(3 * self.patch_size ** 2, self.model_dim)
         
-        # Transformer Blocks
+        # 3) Class Token
+        self.class_token = nn.Parameter(torch.rand(1, 1, self.model_dim))
+        
+        # 4) Positional Embedding
+        self.positional_embedding = nn.Parameter(torch.rand(1, (image_size // patch_size) ** 2 + 1, model_dim))
+        
+        # 5) Transformer blocks
+        self.blocks = nn.ModuleList([
+            TransformerBlock(self.model_dim, self.num_heads) for _ in range(num_layers)
+        ])
+        
+        # 6) Classification MLP
+        self.mlp = nn.Linear(self.model_dim, self.num_classes)
+    
+    def forward(self, x):
+        x = self.patcher(x)
+        x = x.flatten(start_dim=2)
+        x = self.linear_projector(x)
+        
+        batch_size = x.shape[0]
+        class_token = self.class_token.expand(batch_size, -1, -1)
+        x = torch.cat((class_token, x), dim=1)
+        
+        x = x + self.positional_embedding
+        
         for block in self.blocks:
-            out = block(out)
-            
-        # Getting the classification token only
-        out = out[:, 0]
+            x = block(x)
         
-        # Map to output dimension, output category distribution
-        return self.mlp(out)
+        # Using mean pooling as suggested in the article
+        latent = x.mean(dim=1)
+        logits = self.mlp(latent)
+        
+        return logits
